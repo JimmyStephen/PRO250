@@ -1,5 +1,8 @@
 ﻿namespace Chess {
+	using System;
 	using System.Collections.Generic;
+	using System.Linq;
+	using System.Text;
 	public static class FenUtility {
 
 		static Dictionary<char, int> pieceTypeFromSymbol = new Dictionary<char, int> () {
@@ -8,6 +11,36 @@
 
 		public const string startFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
+		public static string RandomizedFen = randomizePlacements();
+		//the string to pass into this function to randomize the placements is "rnbqkbnr".
+		public static string randomizePlacements()
+		{
+			char[] arr = "rnbqkbnr".ToCharArray();
+			StringBuilder temp = new StringBuilder();
+			Random random = new Random();
+
+			arr = arr.OrderBy(x => random.Next()).ToArray();
+			foreach (var i in arr)
+			{
+				temp.Append(i);
+			}
+
+			do
+			{
+				temp.Clear();
+				arr = arr.OrderBy(x => random.Next()).ToArray();
+				foreach (var i in arr)
+				{
+					temp.Append(i);
+				}
+			} while (temp.ToString()[0] == 'k' || temp.ToString()[temp.Length - 1] == 'k');
+
+			string blackPositions = temp.ToString().ToUpper();
+			temp.Append("/pppppppp/8/8/8/8/PPPPPPPP/");
+			temp.Append(blackPositions);
+			temp.Append(" w KQkq - 0 1");
+			return temp.ToString();
+		}
 		// Load position from fen string
 		public static LoadedPositionInfo PositionFromFen (string fen) {
 
