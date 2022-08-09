@@ -18,29 +18,46 @@
 			char[] arr = "rnbqkbnr".ToCharArray();
 			StringBuilder temp = new StringBuilder();
 			Random random = new Random();
-
-			arr = arr.OrderBy(x => random.Next()).ToArray();
-			foreach (var i in arr)
-			{
-				temp.Append(i);
-			}
-
+			bool isValid = false;
 			do
 			{
-				temp.Clear();
 				arr = arr.OrderBy(x => random.Next()).ToArray();
 				foreach (var i in arr)
 				{
 					temp.Append(i);
 				}
-			} while (temp.ToString()[0] == 'k' || temp.ToString()[temp.Length - 1] == 'k');
 
-			string blackPositions = temp.ToString().ToUpper();
-			temp.Append("/pppppppp/8/8/8/8/PPPPPPPP/");
-			temp.Append(blackPositions);
-			temp.Append(" w KQkq - 0 1");
-			return temp.ToString();
+				do
+				{
+					temp.Clear();
+					arr = arr.OrderBy(x => random.Next()).ToArray();
+					foreach (var i in arr)
+					{
+						temp.Append(i);
+					}
+				} while (temp.ToString()[0] == 'k' || temp.ToString()[temp.Length - 1] == 'k');
+				isValid = validateRandom(temp.ToString());
+			} while (!isValid);
+
+				string blackPositions = temp.ToString().ToUpper();
+				temp.Append("/pppppppp/8/8/8/8/PPPPPPPP/");
+				temp.Append(blackPositions);
+				temp.Append(" w KQkq - 0 1");
+				return temp.ToString();
 		}
+
+		public static bool validateRandom(string attempt)
+        {
+			string kingCheck = attempt.Substring(attempt.IndexOf('r'), attempt.LastIndexOf('r') - attempt.IndexOf('r'));
+            if (kingCheck.Contains("k"))
+            {
+				if(attempt.IndexOf('b') % 2 != attempt.LastIndexOf('b') % 2)
+                {
+					return true;
+                }
+            }
+			return false;
+        }
 		// Load position from fen string
 		public static LoadedPositionInfo PositionFromFen (string fen) {
 
