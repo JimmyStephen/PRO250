@@ -89,9 +89,18 @@ namespace Chess.Game {
 			NotifyPlayerToMove ();
 		}
 
-		public void NewGame (bool humanPlaysWhite) {
+		public void NewGame (bool humanPlaysWhite) 
+		{
+			Debug.Log("Normal");
 			boardUI.SetPerspective (humanPlaysWhite);
 			NewGame ((humanPlaysWhite) ? PlayerType.Human : PlayerType.AI, (humanPlaysWhite) ? PlayerType.AI : PlayerType.Human);
+		}
+
+		public void New960Game(bool humanPlaysWhite)
+		{
+			Debug.Log("960");
+			boardUI.SetPerspective(humanPlaysWhite);
+			NewGame((humanPlaysWhite) ? PlayerType.Human : PlayerType.AI, (humanPlaysWhite) ? PlayerType.AI : PlayerType.Human);
 		}
 
 		public void NewComputerVersusComputerGame () {
