@@ -100,12 +100,39 @@ namespace Chess.Game {
 		{
 			Debug.Log("960");
 			boardUI.SetPerspective(humanPlaysWhite);
-			NewGame((humanPlaysWhite) ? PlayerType.Human : PlayerType.AI, (humanPlaysWhite) ? PlayerType.AI : PlayerType.Human);
+			NewGame960((humanPlaysWhite) ? PlayerType.Human : PlayerType.AI, (humanPlaysWhite) ? PlayerType.AI : PlayerType.Human);
 		}
 
 		public void NewComputerVersusComputerGame () {
 			boardUI.SetPerspective (true);
 			NewGame (PlayerType.AI, PlayerType.AI);
+		}
+
+		public void NewComputerVersusComputerGame960()
+		{
+			boardUI.SetPerspective(true);
+			NewGame960(PlayerType.AI, PlayerType.AI);
+		}
+
+		void NewGame960(PlayerType whitePlayerType, PlayerType blackPlayerType)
+		{
+			gameMoves.Clear();
+
+			string temp = board.Load960StartPosition();
+			searchBoard.LoadPosition(temp);
+
+			onPositionLoaded?.Invoke();
+			boardUI.UpdatePosition(board);
+			boardUI.ResetSquareColours();
+
+			CreatePlayer(ref whitePlayer, whitePlayerType);
+			CreatePlayer(ref blackPlayer, blackPlayerType);
+
+			gameResult = Result.Playing;
+			PrintGameResult(gameResult);
+
+			NotifyPlayerToMove();
+
 		}
 
 		void NewGame (PlayerType whitePlayerType, PlayerType blackPlayerType) {

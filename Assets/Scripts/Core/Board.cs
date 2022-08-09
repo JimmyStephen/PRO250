@@ -312,6 +312,13 @@
 			LoadPosition (FenUtility.startFen);
 		}
 
+		public string Load960StartPosition()
+        {
+			string temp = FenUtility.randomizePlacements();
+			LoadPosition(temp);
+			return temp;
+        }
+
 		// Load custom position from fen string
 		public void LoadPosition (string fen) {
 			Initialize ();
